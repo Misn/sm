@@ -5,6 +5,7 @@
 int len=120;		//Number of steps
 int ptime=20;		//Period, ms
 int st_file_x, st_file_y;
+//num_file_name = "num_file";
 
 #include </home/pi/mixed_proj/sm/sm_header/sm6.h>
 #include </home/pi/mixed_proj/sm/move/move.h>
@@ -22,7 +23,7 @@ struct t_position {		//Table position
 	int y_phase;			//Y phase
 };
 
-struct point pic[10];		//Array of points
+struct point pic[30000];		//Array of points
 
 int st_file_op(char *operation) {
 	FILE *st_file;
@@ -95,7 +96,8 @@ int main()
 	fclose(num_file);
 	
 	st_file_op("read");
-	
+	printf("!!!%d!!!", st_file_x);
+	//fflush(stdout);
 	pic_file = fopen("pic_file","r");
 	if (pic_file==NULL){
 		perror ("failed to open pic_file");
@@ -103,10 +105,12 @@ int main()
 	}	
 	i=1;
 	pic[0].x=0; pic[0].y=0; pic[0].t=0;
-	while (fscanf(num_file, "%d %d %d", &(pic[i].x), &(pic[i].y), &(pic[i].t)) != EOF) {
+	fflush(stdout);
+	while (fscanf(pic_file, "%d %d %d", &(pic[i].x), &(pic[i].y), &(pic[i].t)) != EOF) {
 		i++;
 	}
-	fclose(num_file);
+	printf("@@@%d@@@", st_file_x);
+	fclose(pic_file);
 	
 	//PIN_set("y");
 	/*for (i=0; i<6; i++){
@@ -115,6 +119,7 @@ int main()
 	printf("\n");
 	printf("%d",st_file_y);
 	*/
+			
 	if (digitalRead(PIN_all[25])==1) {
 		while (digitalRead(PIN_all[28])==1) {
 			for (i=0; i<6; i++){
@@ -131,6 +136,7 @@ int main()
 			if (digitalRead(PIN_all[28])==0) {break;}
 		}
 	}
+	
 	if (digitalRead(PIN_all[25])==0) {
 		dir("r");
 		i=1;

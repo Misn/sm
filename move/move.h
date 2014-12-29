@@ -5,7 +5,7 @@ int pwr_st(int state_number)			//Setting current state
 		pwr(PIN[i],states_full[state_number][i]);
 	}
 	printf("\n");
-	delay(ptime);				//Period
+	//delay(ptime);				//Period
 }
 
 int pwr(int n, int p)			//PIN state switcher
@@ -91,6 +91,7 @@ int move(char *a, int diff)											//Move *st_num* steps
 	if (diff>0) {
 		dir("r");							
 		st_s=find_starting_st("r",st);
+		printf("£££%d£££", st_file_x);
 		mov=abs(diff);
 	}
 	}

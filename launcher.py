@@ -1,8 +1,9 @@
 #!/usr/bin/python3
-from subprocess import call
+from subprocess import Popen
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
+import RPi.GPIO as GPIO
 
 class Point:
 	def __init__(self, x_coord, y_coord, p_delay):
@@ -35,12 +36,27 @@ class list:
 	#except ValueError:
 		#pass
 
-#def start_sm(*args):
-	#try:
+def start_sm(*args):
+	try:
 		#call(["/home/pi/mixed_proj/sm/sm6"]);
 		#set_button.focus();
-	#except ValueError:
-		#pass
+		global sm_proc;
+		sm_proc=Popen("/home/pi/mixed_proj/sm/sm6");
+		#sm_proc.wait();
+		#stop_button.enable();
+	except ValueError:
+		pass
+		
+def stop_sm(*args):
+	try:
+		sm_proc.terminate();
+		GPIO.setmode(GPIO.BOARD);
+		GPIO.setwarnings(False);
+		for i in (11, 12, 13, 15, 16, 18):
+			GPIO.setup(i,GPIO.OUT, initial=GPIO.LOW);
+		#set_button.focus();
+	except ValueError:
+		pass
 		
 def close_prog(*args):
 	try:
@@ -84,14 +100,24 @@ points = [];
 main_label_var      =StringVar();
 quit_button   =ttk.Button(mainframe, text="Quit",   command=close_prog);
 main_label    =ttk.Label(mainframe, textvariable=main_label_var);
-#start_button  =ttk.Button(mainframe, text="Start", command=start_sm);
-open_button=ttk.Button(mainframe, text="open", command=open_file);
-main_label    .grid(column=1, row=1,            sticky=(N, S)      );
-#start_button  .grid(column=2, columnspan=2, row=6,            sticky=(N, S, E, W));
-quit_button   .grid(column=1, row=3,            sticky=(N, S, E, W));
-open_button   .grid(column=1, row=2,            sticky=(N, S, E, W));
+start_button  =ttk.Button(mainframe, text="Start", command=start_sm);
+x_right_button=ttk.Button(mainframe, text="Right");
+y_right_button=ttk.Button(mainframe, text="Left");
+x_left_button =ttk.Button(mainframe, text="Up");
+y_left_button =ttk.Button(mainframe, text="Down");
+stop_button   =ttk.Button(mainframe, text="STOP", command=stop_sm);
 
-main_label_var=open_file();
+#open_button=ttk.Button(mainframe, text="open", command=open_file);
+main_label    .grid(column=1, row=1,            sticky=(N, S)      );
+start_button  .grid(column=1, row=2,            sticky=(N, S, E, W));
+quit_button   .grid(column=1, row=3,            sticky=(N, S, E, W));
+#open_button   .grid(column=1, row=2,            sticky=(N, S, E, W));
+x_right_button.grid(column=4, row=2,            sticky=(N, S, E, W));
+y_right_button.grid(column=3, row=1,            sticky=(N, S, E, W));
+x_left_button .grid(column=2, row=2,            sticky=(N, S, E, W));
+y_left_button .grid(column=3, row=3,            sticky=(N, S, E, W));
+stop_button   .grid(column=3, row=2,            sticky=(N, S, E, W));
+#main_label_var=open_file();
 	
 #start_button  .bind('<Return>', start_sm        );
 

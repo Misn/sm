@@ -25,7 +25,7 @@ def parameters_write(*args):
 def period_write(*args):
 	try:
 		num_file=open("num_file", 'w');
-		num_file.write("12 {0}".format(time_var.get()));
+		num_file.write("12 {0}".format(period_var.get()));
 		num_file.close;
 	except ValueError:
 		pass
@@ -64,6 +64,7 @@ root = Tk();
 #y = (hs/2) - (h/2);
 #root.geometry("%dx%d+%d+%d" % (w, h, x, y));
 root.geometry("+700+370");
+#root.geometry("+{0}+{1}".format(root.winfo_screenwidth(), root.winfo_screenheight()));
 ##################################
 
 mainframe = ttk.Frame(root, padding="5 5 5 5");
